@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="Create New Account"
+        android:text="建立新帐户"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,7 +87,7 @@
         app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintBottom_toBottomOf="@id/circularProgressIndicator"
         app:layout_constraintStart_toEndOf="@id/circularProgressIndicator"
-        android:text="operation in progress... "
+        android:text="操作正在进行中... "
         tools:visibility="visible" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -95,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:hint="Sign in to your account easily and securely with a passkey. Note: Your biometric data is only stored on your devices and will never be shared with anyone."
+        android:hint="使用密码轻松安全地登录您的帐户。注意：您的生物识别数据仅存储在您的设备上，绝不会与任何人共享."
         android:textAlignment="center"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -105,7 +105,7 @@
         android:id="@+id/sign_up"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Sign Up with passkey"
+        android:text="使用密钥注册"
         android:textAllCaps="false"
         app:layout_constraintTop_toBottomOf="@+id/passkey_hint"
         app:layout_constraintEnd_toEndOf="parent"
@@ -130,7 +130,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/or"
         android:layout_marginTop="20dp"
-        android:hint="Sign up in to your account with a password. Your password will be saved securely with your password provider."
+        android:hint="使用密码登录您的帐户。您的密码将由您的密码提供商安全保存."
         android:textAlignment="center" />
 
     <Button
@@ -138,7 +138,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Sign up with a password instead"
+        android:text="使用密码注册"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

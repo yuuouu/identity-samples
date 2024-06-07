@@ -72,7 +72,6 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         credentialManager = CredentialManager.create(requireActivity())
-
         binding.signUp.setOnClickListener(signUpWithPasskeys())
         binding.signUpWithPassword.setOnClickListener(signUpWithPassword())
     }
@@ -82,20 +81,16 @@ class SignUpFragment : Fragment() {
             binding.password.visibility = View.VISIBLE
 
             if (binding.username.text.isNullOrEmpty()) {
-                binding.username.error = "User name required"
+                binding.username.error = "需要用户名"
                 binding.username.requestFocus()
             } else if (binding.password.text.isNullOrEmpty()) {
-                binding.password.error = "Password required"
+                binding.password.error = "要求输入密码"
                 binding.password.requestFocus()
             } else {
                 lifecycleScope.launch {
-
                     configureViews(View.VISIBLE, false)
-
                     createPassword()
-
                     simulateServerDelayAndLogIn()
-
                 }
             }
         }
@@ -103,11 +98,8 @@ class SignUpFragment : Fragment() {
 
     private fun simulateServerDelayAndLogIn() {
         Handler(Looper.getMainLooper()).postDelayed({
-
             DataProvider.setSignedInThroughPasskeys(false)
-
             configureViews(View.INVISIBLE, true)
-
             listener.showHome()
         }, 2000)
     }
@@ -123,11 +115,8 @@ class SignUpFragment : Fragment() {
             } else {
                 lifecycleScope.launch {
                     configureViews(View.VISIBLE, false)
-
                     val data = createPasskey()
-
                     configureViews(View.INVISIBLE, true)
-
                     data?.let {
                         registerResponse()
                         DataProvider.setSignedInThroughPasskeys(true)
@@ -177,7 +166,7 @@ class SignUpFragment : Fragment() {
         try {
             credentialManager.createCredential(requireActivity(), request) as CreatePasswordResponse
         } catch (e: Exception) {
-            Log.e("Auth", "createPassword failed with exception: " + e.message)
+            Log.e("Auth", "创建密码失败，出现异常: " + e.message)
         }
     }
 
@@ -213,16 +202,16 @@ class SignUpFragment : Fragment() {
             is CreatePublicKeyCredentialDomException -> {
                 // Handle the passkey DOM errors thrown according to the
                 // WebAuthn spec using e.domError
-                "An error occurred while creating a passkey, please check logs for additional details."
+                "创建密钥时出错，请检查日志以获取更多详细信息."
             }
             is CreateCredentialCancellationException -> {
                 // The user intentionally canceled the operation and chose not
                 // to register the credential.
-                "The user intentionally canceled the operation and chose not to register the credential. Check logs for additional details."
+                "用户取消操作并选择不注册凭证。检查日志以获取更多详细信息."
             }
             is CreateCredentialInterruptedException -> {
                 // Retry-able error. Consider retrying the call.
-                "The operation was interrupted, please retry the call. Check logs for additional details."
+                "操作已中断，请重试呼叫。检查日志以获取更多详细信息."
             }
             is CreateCredentialProviderConfigurationException -> {
                 // Your app is missing the provider configuration dependency.
@@ -230,7 +219,7 @@ class SignUpFragment : Fragment() {
                 "Your app is missing the provider configuration dependency. Check logs for additional details."
             }
             is CreateCredentialUnknownException -> {
-                "An unknown error occurred while creating passkey. Check logs for additional details."
+                "创建密钥时发生未知错误。检查日志以获取更多详细信息."
             }
             is CreateCredentialCustomException -> {
                 // You have encountered an error from a 3rd-party SDK. If you
@@ -239,14 +228,14 @@ class SignUpFragment : Fragment() {
                 // should check for any custom exception type constants within
                 // that SDK to match with e.type. Otherwise, drop or log the
                 // exception.
-                "An unknown error occurred from a 3rd party SDK. Check logs for additional details."
+                "第三方 SDK 发生未知错误。检查日志以获取更多详细信息."
             }
             else -> {
-                Log.w("Auth", "Unexpected exception type ${e::class.java.name}")
+                Log.w("Auth", "意外异常类型 ${e::class.java.name}")
                 "An unknown error occurred."
             }
         }
-        Log.e("Auth", "createPasskey failed with exception: " + e.message.toString())
+        Log.e("Auth", "createPasskey 失败并出现异常: " + e.message.toString())
         activity?.showErrorAlert(msg)
     }
 

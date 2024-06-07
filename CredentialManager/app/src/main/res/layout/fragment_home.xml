@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Sign out and try again" />
+        android:text="退出并重试" />
 
     <ImageView
         android:layout_width="wrap_content"

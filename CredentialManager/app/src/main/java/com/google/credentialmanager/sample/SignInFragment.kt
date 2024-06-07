@@ -69,14 +69,11 @@ class SignInFragment : Fragment() {
 
     private fun signInWithSavedCredentials(): View.OnClickListener {
         return View.OnClickListener {
-
             lifecycleScope.launch {
                 configureViews(View.VISIBLE, false)
-
                 val data = getSavedCredentials()
-
+                Log.e("TAG", "signInWithSavedCredentials: data=$data")
                 configureViews(View.INVISIBLE, true)
-
                 data?.let {
                     sendSignInResponseToServer()
                     listener.showHome()
@@ -121,7 +118,7 @@ class SignInFragment : Fragment() {
             configureViews(View.INVISIBLE, true)
             Log.e("Auth", "getCredential failed with exception: " + e.message.toString())
             activity?.showErrorAlert(
-                "An error occurred while authenticating through saved credentials. Check logs for additional details"
+                "通过保存的凭据进行身份验证时出错。检查日志以获取更多详细信息"
             )
             return null
         }

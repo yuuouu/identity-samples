@@ -30,8 +30,8 @@ class HomeFragment : Fragment() {
     private lateinit var listener: HomeFragmentCallback
 
     companion object {
-        private const val LOGGED_IN_THROUGH_PASSWORD = "Logged in successfully through password"
-        private const val LOGGED_IN_THROUGH_PASSKEYS = "Logged in successfully through passkeys"
+        private const val LOGGED_IN_THROUGH_PASSWORD = "通过密码登录成功"
+        private const val LOGGED_IN_THROUGH_PASSKEYS = "通过密码登录成功"
     }
 
     override fun onAttach(context: Context) {
