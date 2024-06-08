@@ -1,14 +1,23 @@
 package com.google.samples.smartlock.sms_verify.ui;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.IntentSenderRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +29,8 @@ import android.widget.TextView;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.CredentialPickerConfig;
+import com.google.android.gms.auth.api.credentials.Credentials;
+import com.google.android.gms.auth.api.credentials.CredentialsClient;
 import com.google.android.gms.auth.api.credentials.HintRequest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -31,7 +42,7 @@ abstract class PhoneNumberActivity extends AppCompatActivity
 
     public static final String TAG = PhoneNumberActivity.class.getSimpleName();
 
-    private GoogleApiClient mCredentialsApiClient;
+
     private static final int RC_HINT = 1000;
 
     private PrefsHelper prefs;
@@ -48,30 +59,26 @@ abstract class PhoneNumberActivity extends AppCompatActivity
             ui.setPhoneNumber(defaultPhone);
         }
 
-        mCredentialsApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.CREDENTIALS_API)
-                .build();
+        initActivityResult();
     }
 
     protected abstract String getActivityTitle();
 
     protected abstract void doSubmit(String phoneValue);
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_HINT) {
-            if (resultCode == RESULT_OK) {
-                Credential cred = data.getParcelableExtra(Credential.EXTRA_KEY);
+    public void initActivityResult() {
+        intentSenderLauncher = registerForActivityResult(new ActivityResultContracts.StartIntentSenderForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                Credential cred = result.getData().getParcelableExtra(Credential.EXTRA_KEY);
+                Log.e(TAG, "onActivityResult: data=" + cred.getId());
                 ui.setPhoneNumber(cred.getId());
             } else {
                 ui.focusPhoneNumber();
             }
-        }
+        });
     }
+
+    private ActivityResultLauncher<IntentSenderRequest> intentSenderLauncher;
 
     private void showHint() {
         ui.clearKeyboard();
@@ -80,14 +87,15 @@ abstract class PhoneNumberActivity extends AppCompatActivity
                         .setShowCancelButton(true)
                         .build())
                 .setPhoneNumberIdentifierSupported(true)
+//                .setEmailAddressIdentifierSupported(true)
                 .build();
-
-        PendingIntent intent =
-                Auth.CredentialsApi.getHintPickerIntent(mCredentialsApiClient, hintRequest);
+        CredentialsClient credentialsClient = Credentials.getClient(this);
+        PendingIntent intent = credentialsClient.getHintPickerIntent(hintRequest);
         try {
-            startIntentSenderForResult(intent.getIntentSender(), RC_HINT, null, 0, 0, 0);
-        } catch (IntentSender.SendIntentException e) {
-            Log.e(TAG, "Could not start hint picker Intent", e);
+            IntentSenderRequest intentSenderRequest = new IntentSenderRequest.Builder(intent.getIntentSender()).build();
+            intentSenderLauncher.launch(intentSenderRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -106,12 +114,12 @@ abstract class PhoneNumberActivity extends AppCompatActivity
 
     @Override
     public void onConnectionSuspended(int cause) {
-        Log.d(TAG, "GoogleApiClient is suspended with cause code: " + cause);
+        Log.d(TAG, "GoogleApiClient 因原因代码而被暂停: " + cause);
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG, "GoogleApiClient failed to connect: " + connectionResult);
+        Log.d(TAG, "GoogleApiClient 连接失败: " + connectionResult);
     }
 
     class PhoneNumberUi implements View.OnClickListener {
@@ -159,7 +167,7 @@ abstract class PhoneNumberActivity extends AppCompatActivity
         }
 
         void clearKeyboard() {
-            phoneFocus.hideKeyboard();
+            if(phoneField!=null) phoneFocus.hideKeyboard();
         }
 
         void setSubmitEnabled(boolean enabled) {
