@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">SMS Verify</string>
+    <string name="sign_up_btn">Sign Up</string>
+    <string name="phone_label">Phone</string>
+    <string name="submit_sign_up">Submit</string>
+    <string name="phone_verify_notify_title">确认电话号码</string>
+    <string name="phone_verify_notify_message">%s</string>
+    <string name="toast_verified">已验证的电话号码</string>
+    <string name="toast_unverified">未经验证的电话号码</string>
+    <string name="action_settings">设置</string>
+    <string name="section_format">Hello World，来自部分：%1$d</string>
+    <string name="welcome_text">满足您所有的短信验证需求.</string>
+    <string name="status_text">状态：未验证</string>
+    <string name="status_text_template">状态：已验证\'%s\'.</string>
+    <string name="toast_start_verify">验证电话号码： %s</string>
+    <string name="pref_desc_secret_override">服务器秘密覆盖</string>
+    <string name="pref_title_secret_override">服务器覆盖</string>
+
+    <!-- This should point to your servers. -->
+    <string name="reset_btn">重置验证</string>
+    <string name="toast_unable_to_reset">无法重置验证，可能您未经过验证.</string>
+    <string name="toast_something_wrong">发生错误,请稍后再试.</string>
+    <string name="reset_title">重置您的验证</string>
+    <string name="sign_up_title">注册短信验证</string>
+    <string name="menu_setting_title">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="toast_request_error">服务器响应错误</string>
+    <string name="pref_title_app_signature">应用签名</string>
+    <string name="pref_desc_app_signature">Unknown</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="verifying_menu_verification">SMS Code</string>
+    <string name="verifying_menu_verification_submit">Submit</string>
+    <string name="verifying_menu_verification_cancel">取消验证</string>
+    <string name="status_default_value">未验证</string>
+    <string name="verifying_menu_verification_required_text">需要短信验证码</string>
+    <string name="toast_cancelled_verification">已取消验证</string>
+    <string name="cancel_verification">Cancel</string>
+    <string name="verifier_registered">已注册短信接收器</string>
+    <string name="verifier_server_response">服务器发送短信</string>
+    <string name="verifying_text">验证短信</string>
+    <string name="menu_reset_verification_title">重置验证</string>
+
+    <string name="server_client_secret">0000000000</string>
+    <string name="server_client_secret_v8">0000000000</string>
+    <string name="url_verify">https://your-server.com/api/verify</string>
+    <string name="url_request">https://your-server.com/api/request</string>
+    <string name="url_reset">https://your-server.com/api/reset</string>
+</resources>
